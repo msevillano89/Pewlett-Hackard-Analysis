@@ -27,7 +27,21 @@ As mentioned above, 72,458 roles will need to be filled if all eligible employee
 
 ### Are there enough qualified, retirement-ready employees in the departments to mentor the next generation of Pewlett Hackard employees?
 We can run an additional query to compare the number of employees eligible for retirement against those eligible for the mentorship program.
+```
+SELECT title, COUNT(emp_no) AS "total count"
+INTO mentee_count
+FROM mentorship_eligibility
+GROUP BY title
+ORDER BY "total count" DESC;
 
+SELECT rt.title,
+  	rt."total count" as "Retiree Count",
+  	mc."total count" as "Mentee Count",
+    ROUND(rt."total count"/mc."total count", 1) AS PERCENT
+FROM retiring_titles as rt
+LEFT JOIN mentee_count as mc
+ON (rt.title = mc.title);
+```
 ![Comparison](https://github.com/msevillano89/Pewlett-Hackard-Analysis/blob/main/Comparison.png)
 
 As shown in the image above, there are more than enough retirement-ready employees for each department to mentor the next generation. In most positions, except for Managers, the ratio of mentees and mentors is over one, which reinforces the understanding that there are enough mentors for each mentee. 
